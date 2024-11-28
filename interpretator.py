@@ -6,8 +6,13 @@ import sys
 def extract_signed_field(value, shift, size):
     mask = (1 << size) - 1
     field = (value >> shift) & mask
-    # if field & (1 << (size - 1)):
-    #     field -= (1 << size)
+    return field
+
+def extract_minus_field(value, shift, size):
+    mask = (1 << size) - 1
+    field = (value >> shift) & mask
+    if str(bin((field & (1 << (size - 2)))))[2] == "1":
+        field = -(field & (~(1 << size - 2)))
 
     return field
 
@@ -15,7 +20,6 @@ def extract_signed_field(value, shift, size):
 def interpret(binary_file, result_file, memory_range):
     with open("output.bin", "rb") as f:
         data = f.read()
-        print(data)
 
     memory = [0] * 1024
     program_counter = 0
@@ -24,17 +28,12 @@ def interpret(binary_file, result_file, memory_range):
     while program_counter < len(data):
         size = 5 if data[program_counter] & 0x1F == 18 else 4 if data[program_counter] & 0x1F == 2 else 3
         instruction = int.from_bytes(data[program_counter:program_counter + size], "little")
-        print(bin(instruction))
         program_counter += size
 
         A = instruction & 0x1F
-        print(A)
-        B = extract_signed_field(instruction, 5, 28 if A == 18 else 19 if A == 2 else 3)
-        print(B)
+        B = extract_minus_field(instruction, 5, 28 if A == 18 else 19 if A == 2 else 3)
         C = extract_signed_field(instruction, 33 if A == 18 else 24 if A == 2 else 8, 3)
-        print(C)
         D = (instruction >> 11) & 0x7FF if A in {10, 1} else None
-        print(D)
 
         if A == 18:
             memory[C] = B

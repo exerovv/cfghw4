@@ -2,7 +2,6 @@ import struct
 import yaml
 import sys
 
-
 COMMANDS = {
     "LOAD_CONST": 18,
     "READ_MEM": 2,
@@ -29,23 +28,43 @@ def assemble(input_file, output_file, log_file):
         command = parts[0]
         A = COMMANDS[command]
         B = int(parts[1])
+        minus = "minus" if B < 0 else "plus"
         C = int(parts[2])
         D = int(parts[3]) if len(parts) > 3 else 0
 
-        if command == "LOAD_CONST":
-            instruction = (A & 0x1F) | ((B & 0x1FFFFFFF) << 5) | ((C & 0x7) << 33)
-            size = 5
-        elif command == "READ_MEM":
-            instruction = (A & 0x1F) | ((B & 0x7FFFFF) << 5) | ((C & 0x7) << 24)
-            size = 4
-        elif command == "WRITE_MEM":
-            instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
-            size = 3
-        elif command == "UNARY_MINUS":
-            instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
-            size = 3
+        if (minus == "plus"):
+
+            if command == "LOAD_CONST":
+                instruction = (A & 0x1F) | ((B & 0xFFFFFF) << 5) | ((C & 0x7) << 33)
+                size = 5
+            elif command == "READ_MEM":
+                instruction = (A & 0x1F) | ((B & 0x7FFFFF) << 5) | ((C & 0x7) << 24)
+                size = 4
+            elif command == "WRITE_MEM":
+                instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
+                size = 3
+            elif command == "UNARY_MINUS":
+                instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
+                size = 3
+            else:
+                raise ValueError(f"Unknown command: {command}")
         else:
-            raise ValueError(f"Unknown command: {command}")
+            B = abs(B)
+            if command == "LOAD_CONST":
+                instruction = (A & 0x1F) | (0x80000000 | (B & 0xFFFFFFF) << 5) | ((C & 0x7) << 33)
+                print(bin(instruction))
+                size = 5
+            elif command == "READ_MEM":
+                instruction = (A & 0x1F) | ((B & 0x7FFFFF) << 5) | ((C & 0x7) << 24)
+                size = 4
+            elif command == "WRITE_MEM":
+                instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
+                size = 3
+            elif command == "UNARY_MINUS":
+                instruction = (A & 0x1F) | ((B & 0x7) << 5) | ((C & 0x7) << 8) | ((D & 0x7FF) << 11)
+                size = 3
+            else:
+                raise ValueError(f"Unknown command: {command}")
 
         binary_data.extend(struct.pack("<Q", instruction)[:size])
         log_data.append({
