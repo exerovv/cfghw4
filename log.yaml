@@ -1,20 +1,145 @@
 - A: 18
   B: 309
-  C: 3
+  C: 1
   D: null
   bytes:
   - '0xB2'
   - '0x26'
   - '0x00'
   - '0x00'
+  - '0x02'
+  command: LOAD_CONST
+- A: 10
+  B: 1
+  C: 0
+  D: 7
+  bytes:
+  - '0x2A'
+  - '0x38'
+  - '0x00'
+  command: WRITE_MEM
+- A: 1
+  B: 1
+  C: 0
+  D: 7
+  bytes:
+  - '0x21'
+  - '0x38'
+  - '0x00'
+  command: UNARY_MINUS
+- A: 18
+  B: 59
+  C: 2
+  D: null
+  bytes:
+  - '0x72'
+  - '0x07'
+  - '0x00'
+  - '0x80'
+  - '0x04'
+  command: LOAD_CONST
+- A: 10
+  B: 2
+  C: 0
+  D: 8
+  bytes:
+  - '0x4A'
+  - '0x40'
+  - '0x00'
+  command: WRITE_MEM
+- A: 1
+  B: 2
+  C: 0
+  D: 8
+  bytes:
+  - '0x41'
+  - '0x40'
+  - '0x00'
+  command: UNARY_MINUS
+- A: 18
+  B: 1
+  C: 3
+  D: null
+  bytes:
+  - '0x32'
+  - '0x00'
+  - '0x00'
+  - '0x00'
   - '0x06'
   command: LOAD_CONST
+- A: 10
+  B: 3
+  C: 0
+  D: 9
+  bytes:
+  - '0x6A'
+  - '0x48'
+  - '0x00'
+  command: WRITE_MEM
+- A: 1
+  B: 3
+  C: 0
+  D: 9
+  bytes:
+  - '0x61'
+  - '0x48'
+  - '0x00'
+  command: UNARY_MINUS
+- A: 18
+  B: 9
+  C: 4
+  D: null
+  bytes:
+  - '0x32'
+  - '0x01'
+  - '0x00'
+  - '0x00'
+  - '0x08'
+  command: LOAD_CONST
+- A: 10
+  B: 4
+  C: 0
+  D: 10
+  bytes:
+  - '0x8A'
+  - '0x50'
+  - '0x00'
+  command: WRITE_MEM
+- A: 1
+  B: 4
+  C: 0
+  D: 10
+  bytes:
+  - '0x81'
+  - '0x50'
+  - '0x00'
+  command: UNARY_MINUS
+- A: 18
+  B: 17
+  C: 5
+  D: null
+  bytes:
+  - '0x32'
+  - '0x02'
+  - '0x00'
+  - '0x80'
+  - '0x0A'
+  command: LOAD_CONST
+- A: 10
+  B: 5
+  C: 0
+  D: 11
+  bytes:
+  - '0xAA'
+  - '0x58'
+  - '0x00'
+  command: WRITE_MEM
 - A: 1
   B: 5
   C: 0
-  D: 3
+  D: 11
   bytes:
   - '0xA1'
-  - '0x18'
+  - '0x58'
   - '0x00'
   command: UNARY_MINUS

@@ -52,7 +52,6 @@ def assemble(input_file, output_file, log_file):
             B = abs(B)
             if command == "LOAD_CONST":
                 instruction = (A & 0x1F) | (0x80000000 | (B & 0xFFFFFFF) << 5) | ((C & 0x7) << 33)
-                print(bin(instruction))
                 size = 5
             elif command == "READ_MEM":
                 instruction = (A & 0x1F) | ((B & 0x7FFFFF) << 5) | ((C & 0x7) << 24)

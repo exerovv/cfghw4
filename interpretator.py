@@ -31,7 +31,10 @@ def interpret(binary_file, result_file, memory_range):
         program_counter += size
 
         A = instruction & 0x1F
-        B = extract_minus_field(instruction, 5, 28 if A == 18 else 19 if A == 2 else 3)
+        if (A == 18):
+            B = extract_minus_field(instruction, 5, 28 if A == 18 else 19 if A == 2 else 3)
+        else:
+            B = extract_signed_field(instruction, 5, 28 if A == 18 else 19 if A == 2 else 3)
         C = extract_signed_field(instruction, 33 if A == 18 else 24 if A == 2 else 8, 3)
         D = (instruction >> 11) & 0x7FF if A in {10, 1} else None
 
@@ -40,7 +43,7 @@ def interpret(binary_file, result_file, memory_range):
         elif A == 2:
             memory[C] = memory[memory[B]]
         elif A == 10:
-            memory[B] = memory[memory[C] + D]
+            memory[memory[C] + D] = memory[B]
         elif A == 1:
             memory[B] = -memory[memory[C] + D]
 
@@ -49,7 +52,7 @@ def interpret(binary_file, result_file, memory_range):
             "B": B,
             "C": C,
             "D": D,
-            "memory_snapshot": memory[:10],
+            "memory_snapshot": memory[:11],
         })
 
     result = {"memory": memory[memory_range[0]:memory_range[1]], "log": log_data}
